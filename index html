@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Bazar — Geography of India 3rd Sem | Unit 5 | পরিবহণ ও যোগাযোগ</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Syne',sans-serif;background:#f0faf4;min-height:100vh;color:#1c2e24}
+.top-bar{background:#1a7a4a;padding:0.8rem 1.5rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.top-logo{font-size:1.1rem;font-weight:800;color:white}.top-logo span{color:#f9a825}
+.timer-box{background:rgba(255,255,255,0.15);border-radius:8px;padding:0.4rem 1rem;display:flex;align-items:center;gap:6px;font-size:1rem;font-weight:700;color:white}
+.timer-box.danger{background:#dc3545}
+.main{max-width:820px;margin:0 auto;padding:1.5rem 1rem}
+.hub-header{text-align:center;margin-bottom:2rem}
+.hub-header h1{font-family:'Tiro Bangla',serif;font-size:1.8rem;color:#1c2e24}
+.hub-header p{font-family:'Tiro Bangla',serif;font-size:0.95rem;color:#5a7a66;margin-top:0.3rem}
+.set-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.set-card{background:white;border-radius:14px;padding:1.5rem;border:1.5px solid #c5dccb;transition:all 0.2s;cursor:pointer;color:#1c2e24;box-shadow:0 2px 8px rgba(26,122,74,0.06)}
+.set-card:hover{transform:translateY(-3px);border-color:#1a7a4a;box-shadow:0 6px 20px rgba(26,122,74,0.12)}
+.set-card .icon{font-size:2.2rem;margin-bottom:0.3rem}
+.set-card .set-num{font-weight:700;font-size:1.1rem;color:#1a7a4a}
+.set-card .set-title{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin:0.2rem 0 0.5rem}
+.set-card .set-meta{display:flex;gap:1rem;font-size:0.7rem;color:#5a7a66}
+.set-card .set-meta span{background:#f0faf4;padding:0.15rem 0.6rem;border-radius:4px}
+.set-card .attempt-badge{font-size:0.7rem;color:#dc3545;font-weight:600;margin-top:0.3rem}
+.set-card.locked{opacity:0.5;cursor:not-allowed;border-color:#dc3545}
+.set-card.locked:hover{transform:none;box-shadow:none}
+.quiz-info{background:white;border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;border:1px solid #c5dccb;display:flex;gap:1rem;flex-wrap:wrap}
+.info-item{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66}
+.info-item strong{color:#1a7a4a}
+.progress-wrap{background:#c5dccb;border-radius:4px;height:6px;margin-bottom:1.2rem;overflow:hidden}
+.progress-fill{height:100%;background:#1a7a4a;border-radius:4px;transition:width 0.3s}
+.q-card{background:white;border-radius:14px;padding:1.4rem;margin-bottom:1rem;border:1px solid #c5dccb;box-shadow:0 2px 10px rgba(26,122,74,0.06)}
+.q-num{font-size:0.75rem;font-weight:700;color:#e8730a;letter-spacing:1px;text-transform:uppercase;margin-bottom:0.6rem}
+.q-text{font-family:'Tiro Bangla',serif;font-size:1rem;color:#1c2e24;line-height:1.7;margin-bottom:1.1rem}
+.opts{display:flex;flex-direction:column;gap:0.6rem}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:0.7rem 1rem;border:1.5px solid #c5dccb;border-radius:10px;cursor:pointer;transition:all 0.15s;background:white;text-align:left;width:100%;font-family:inherit}
+.opt:hover:not(.disabled){border-color:#1a7a4a;background:#f0faf4}
+.opt-circle{min-width:28px;height:28px;border-radius:50%;border:1.5px solid #c5dccb;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5a7a66;flex-shrink:0;transition:all 0.15s}
+.opt-text{font-family:'Tiro Bangla',serif;font-size:0.92rem;color:#1c2e24;line-height:1.6;padding-top:2px}
+.opt.correct{border-color:#1a7a4a;background:#e8f7ef}
+.opt.correct .opt-circle{background:#1a7a4a;border-color:#1a7a4a;color:white}
+.opt.wrong{border-color:#dc3545;background:#fdf0f0}
+.opt.wrong .opt-circle{background:#dc3545;border-color:#dc3545;color:white}
+.opt.disabled{cursor:default}
+.explanation{background:#f0faf4;border-left:3px solid #1a7a4a;border-radius:0 8px 8px 0;padding:0.8rem 1rem;margin-top:0.8rem;display:none}
+.explanation.show{display:block}
+.explanation p{font-family:'Tiro Bangla',serif;font-size:0.88rem;color:#2c4035;line-height:1.7}
+.explanation strong{color:#1a7a4a}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:0.8rem}
+.score-show{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66}
+.next-btn{background:#1a7a4a;color:white;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:0.9rem;cursor:pointer;transition:all 0.15s}
+.next-btn:hover{background:#2aad68}
+.next-btn:disabled{background:#c5dccb;cursor:default}
+.result-wrap{background:white;border-radius:14px;padding:2rem;text-align:center;border:1px solid #c5dccb;display:none}
+.result-wrap.show{display:block}
+.result-icon{font-size:3rem;margin-bottom:0.5rem}
+.result-score{font-size:3.5rem;font-weight:800;color:#1a7a4a}
+.result-total{font-size:1rem;color:#5a7a66;margin-bottom:0.5rem;font-family:'Tiro Bangla',serif}
+.result-grade{font-size:1.2rem;font-weight:600;color:#1c2e24;margin-bottom:1.5rem;font-family:'Tiro Bangla',serif}
+.result-bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-bottom:1.5rem}
+.result-bar{background:#f0faf4;border-radius:10px;padding:0.8rem;text-align:center}
+.rb-num{font-size:1.4rem;font-weight:800}
+.rb-label{font-family:'Tiro Bangla',serif;font-size:0.8rem;color:#5a7a66;margin-top:0.2rem}
+.retry-btn{background:#1a7a4a;color:white;border:none;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer;margin-right:0.5rem}
+.retry-btn:disabled{background:#c5dccb;cursor:not-allowed}
+.review-btn{background:white;color:#1a7a4a;border:1.5px solid #1a7a4a;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer}
+.back-btn{background:white;color:#5a7a66;border:1.5px solid #c5dccb;padding:0.75rem 2rem;border-radius:8px;font-family:'Tiro Bangla',serif;font-size:1rem;cursor:pointer;margin-top:0.6rem}
+.login-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999;display:none}
+.login-overlay.active{display:flex}
+.login-modal{background:white;border-radius:16px;padding:2.5rem;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.login-modal h2{font-family:'Tiro Bangla',serif;font-size:1.3rem;color:#1c2e24;text-align:center;margin-bottom:0.3rem}
+.login-modal p{font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;text-align:center;margin-bottom:1.5rem}
+.login-modal label{font-size:0.8rem;font-weight:600;color:#1c2e24;display:block;margin-bottom:0.3rem}
+.login-modal input{width:100%;padding:0.7rem 1rem;border:1.5px solid #c5dccb;border-radius:8px;font-size:0.95rem;margin-bottom:1rem;font-family:'Tiro Bangla',serif}
+.login-modal input:focus{outline:none;border-color:#1a7a4a}
+.login-modal .login-btn{width:100%;background:#1a7a4a;color:white;border:none;padding:0.75rem;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Tiro Bangla',serif}
+.login-modal .login-btn:hover{background:#2aad68}
+.login-modal .login-btn:disabled{background:#c5dccb;cursor:not-allowed}
+.login-modal .error-msg{color:#dc3545;font-size:0.8rem;text-align:center;margin-top:0.5rem;font-family:'Tiro Bangla',serif;display:none}
+.login-modal .limit-info{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:0.6rem 1rem;margin-bottom:1rem;font-family:'Tiro Bangla',serif;font-size:0.8rem;color:#856404;display:none}
+.login-modal .set-name-display{background:#f0faf4;border-radius:8px;padding:0.5rem;text-align:center;margin-bottom:1rem;font-family:'Tiro Bangla',serif;font-size:0.9rem;color:#1a7a4a;font-weight:600}
+.hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-logo">Test <span>Bazar</span></div>
+  <div class="timer-box" id="timerBox">⏱ <span id="timerDisplay">10:00</span></div>
+</div>
+
+<div class="main">
+
+  <!-- ===== LOGIN OVERLAY ===== -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-modal">
+      <h2>🔐 লগইন করুন</h2>
+      <p>Test শুরু করতে আপনার ইউজারনেম ও পাসওয়ার্ড দিন</p>
+      <div class="set-name-display" id="loginSetName">📚 Set 1</div>
+      <div class="limit-info" id="limitInfo">⚠️ <span id="limitMsg"></span></div>
+      <label>ইউজারনেম</label>
+      <input type="text" id="loginUsername" placeholder="আপনার ইউজারনেম লিখুন">
+      <label>পাসওয়ার্ড</label>
+      <input type="password" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন" onkeydown="if(event.key==='Enter') doLoginFromSet()">
+      <button class="login-btn" id="loginBtn" onclick="doLoginFromSet()">✅ লগইন করে Test শুরু করো</button>
+      <div class="error-msg" id="loginError">❌ ভুল ইউজারনেম বা পাসওয়ার্ড। আবার চেষ্টা করুন।</div>
+    </div>
+  </div>
+
+  <!-- ===== HUB PAGE ===== -->
+  <div id="hubPage">
+    <div class="hub-header">
+      <h1>📚 ভারতের ভূগোল — Unit 5: পরিবহণ ও যোগাযোগ</h1>
+      <p>পরিবহণ ব্যবস্থা, সড়কপথ, রেলপথ, জলপথ, আকাশপথ, যোগাযোগ ব্যবস্থা ও আধুনিক যোগাযোগ — নিচের সেটগুলো থেকে বেছে নিন। Test শুরু করতে সেটে ক্লিক করুন এবং লগইন করুন।</p>
+      <div id="hubUserInfo" style="font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin-top:0.5rem;"></div>
+    </div>
+    <div class="set-grid" id="setGrid"></div>
+  </div>
+
+  <!-- ===== TEST AREA ===== -->
+  <div id="testArea" class="hidden">
+    <div class="quiz-info">
+      <div class="info-item">🎓 <strong id="testSetName">ভারতের ভূগোল</strong> — Unit 5 | <span id="testSetLabel">Set 1</span></div>
+      <div class="info-item">📝 <span id="testTopic">পরিবহণ ও যোগাযোগ</span></div>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="q-card" id="qCard">
+      <div class="q-num" id="qNum">প্রশ্ন ১ / ১৫</div>
+      <div class="q-text" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="explanation" id="explanation"><p id="explanationText"></p></div>
+      <div class="nav-row">
+        <div class="score-show" id="scoreShow">সঠিক: ০ | ভুল: ০</div>
+        <button class="next-btn" id="nextBtn" onclick="nextQ()" disabled>পরবর্তী →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RESULT AREA ===== -->
+  <div class="result-wrap" id="resultWrap">
+    <div class="result-icon" id="resultIcon"></div>
+    <div class="result-score" id="finalScore"></div>
+    <div class="result-total">/ ১৫</div>
+    <div class="result-grade" id="resultGrade"></div>
+    <div class="result-bars">
+      <div class="result-bar"><div class="rb-num" id="rbCorrect" style="color:#1a7a4a"></div><div class="rb-label">সঠিক</div></div>
+      <div class="result-bar"><div class="rb-num" id="rbWrong" style="color:#dc3545"></div><div class="rb-label">ভুল</div></div>
+      <div class="result-bar"><div class="rb-num" id="rbPct" style="color:#e8730a"></div><div class="rb-label">স্কোর</div></div>
+    </div>
+    <div id="attemptInfo" style="font-family:'Tiro Bangla',serif;font-size:0.85rem;color:#5a7a66;margin-bottom:1rem;"></div>
+    <button class="retry-btn" id="retryBtn" onclick="retryQuiz()">আবার চেষ্টা করো</button>
+    <button class="review-btn" onclick="showReview()">উত্তর দেখো</button>
+    <br>
+    <button class="back-btn" onclick="goToHub()">← Hub এ ফিরে যাও</button>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+//  ইউজার ডেটাবেস
+// ============================================================
+const MAX_ATTEMPTS = 10;
+const TOTAL_SETS = 5;
+
+const userData = [
+  {username:"alfa_romeo", password:"ARx7P29m"},
+  {username:"santos", password:"St8Qv41L"},
+  {username:"falcon", password:"Fc3MZ92k"},
+  {username:"titan", password:"Ti6Rp84W"},
+  {username:"matrix", password:"Mx5Kd73N"},
+  {username:"phoenix", password:"Ph9Js28V"},
+  {username:"cobra", password:"Cb4Ln65X"},
+  {username:"shadow", password:"Sh7Wp19Q"},
+  {username:"rocket", password:"Rc2Ty86M"},
+  {username:"warrior", password:"Wr8Az34K"},
+  {username:"eagle", password:"Eg5Xq72P"},
+  {username:"thunder", password:"Th1Vk93R"},
+  {username:"dragon", password:"Dr6Hm48N"},
+  {username:"panther", password:"Pa9Nc25J"},
+  {username:"viking", password:"Vi4Qs87L"},
+  {username:"hunter", password:"Hu7Bp31X"},
+  {username:"legend", password:"Le2Mz64T"},
+  {username:"ranger", password:"Ra8Kd95W"},
+  {username:"knight", password:"Kn3Xp57Q"},
+  {username:"turbo", password:"Tu6Lv21N"},
+  {username:"alpha", password:"Ap9Rm83K"},
+  {username:"bravo", password:"Br5Yt42M"},
+  {username:"charlie", password:"Ch7Wq16P"},
+  {username:"delta", password:"De4Nk78X"},
+  {username:"echo", password:"Ec8Jp35V"},
+  {username:"foxtrot", password:"Fx2Lm94Q"},
+  {username:"gamma", password:"Ga6Xs27T"},
+  {username:"helix", password:"He1Vp85N"},
+  {username:"inferno", password:"In9Qk43L"},
+  {username:"jaguar", password:"Ja5Mz72W"},
+  {username:"karma", password:"Ka8Rp14X"},
+  {username:"laser", password:"La3Tn67Q"},
+  {username:"meteor", password:"Me7Wx29P"},
+  {username:"nova", password:"No4Kz86M"},
+  {username:"omega", password:"Om2Lp53V"},
+  {username:"pegasus", password:"Pe9Xq71N"},
+  {username:"quantum", password:"Qu5Vr38K"},
+  {username:"rebel", password:"Re8Mz24T"},
+  {username:"storm", password:"St1Kp97W"},
+  {username:"tornado", password:"To6Nx45Q"},
+  {username:"ultra", password:"Ul3Wp82M"},
+  {username:"vector", password:"Ve7Lq19X"},
+  {username:"wolf", password:"Wo4Rm63P"},
+  {username:"xenon", password:"Xe9Tk25N"},
+  {username:"yodha", password:"Yo2Vz78K"},
+  {username:"zeus", password:"Ze8Mp41Q"},
+  {username:"atlas", password:"At5Lx93W"},
+  {username:"blaze", password:"Bl1Qn67M"},
+  {username:"cyclone", password:"Cy7Rp34T"},
+  {username:"dynamo", password:"Dy4Wk82X"},
+  {username:"apollo", password:"Ap7Kx94Lm"},
+  {username:"archer", password:"Ar3Vp62Qn"},
+  {username:"asteroid", password:"As8Tm15Rw"},
+  {username:"bandit", password:"Ba5Qz71Kp"},
+  {username:"bison", password:"Bi9Ln34Xt"},
+  {username:"bullet", password:"Bu2Wr86Mv"},
+  {username:"canyon", password:"Ca6Xp29Qk"},
+  {username:"captain", password:"Cp1Mz75Ln"},
+  {username:"comet", password:"Co8Tk43Wp"},
+  {username:"cyclonex", password:"Cy4Vr92Km"},
+  {username:"diesel", password:"Di7Lp18Qx"},
+  {username:"domino", password:"Do3Wn67Rt"},
+  {username:"duke", password:"Du9Kx25Mv"},
+  {username:"empire", password:"Em5Qp84Ln"},
+  {username:"explorer", password:"Ex2Vz39Kt"},
+  {username:"fighter", password:"Fi8Lm71Qw"},
+  {username:"galaxy", password:"Ga4Tk26Xp"},
+  {username:"gladiator", password:"Gl7Wp95Mn"},
+  {username:"gravity", password:"Gr1Nx53Lq"},
+  {username:"hawk", password:"Ha9Kz42Rt"},
+  {username:"horizon", password:"Ho5Vm87Xp"},
+  {username:"icefire", password:"Ic3Lp16Qn"},
+  {username:"impact", password:"Im8Wr74Kt"},
+  {username:"ironman", password:"Ir2Xq95Mv"},
+  {username:"jetstar", password:"Je6Nk38Lp"},
+  {username:"kingston", password:"Ki1Vp72Qw"},
+  {username:"lightning", password:"Li9Tm45Rx"},
+  {username:"majestic", password:"Ma4Kp83Ln"},
+  {username:"monster", password:"Mo7Wz21Qt"},
+  {username:"neptune", password:"Ne3Lx96Mv"},
+  {username:"ninja", password:"Ni8Qr54Kp"},
+  {username:"orbit", password:"Or2Vp73Ln"},
+  {username:"patriot", password:"Pa6Tk18Qw"},
+  {username:"pioneer", password:"Pi1Xm85Rt"},
+  {username:"predator", password:"Pr9Lq47Kv"},
+  {username:"proton", password:"Pt4Wn62Mx"},
+  {username:"rapid", password:"Ra7Kx93Lp"},
+  {username:"samurai", password:"Sa3Vp25Qn"},
+  {username:"sniper", password:"Sn8Tm71Rw"},
+  {username:"solaris", password:"So2Qk84Mv"},
+  {username:"spartan", password:"Sp6Ln39Xt"},
+  {username:"striker", password:"St1Wr57Kp"},
+  {username:"summit", password:"Su9Xp26Lm"},
+  {username:"taurus", password:"Ta5Vz91Qw"},
+  {username:"tempest", password:"Te3Kp48Rt"},
+  {username:"trident", password:"Tr8Wm72Ln"},
+  {username:"valiant", password:"Va2Nx35Qk"},
+  {username:"voyager", password:"Vo6Lp97Mx"},
+  {username:"wildfire", password:"Wi1Tk64Rv"},
+  {username:"zenith", password:"Ze9Qx28Lp"}
+];
+
+// ============================================================
+//  localStorage-এ attempts সংরক্ষণ
+// ============================================================
+function getAttempts() {
+  try {
+    const data = localStorage.getItem('testBazarAttempts');
+    return data ? JSON.parse(data) : {};
+  } catch { return {}; }
+}
+
+function saveAttempts(attempts) {
+  localStorage.setItem('testBazarAttempts', JSON.stringify(attempts));
+}
+
+function getAttemptCount(username, setId) {
+  const attempts = getAttempts();
+  const key = username + '|' + setId;
+  return attempts[key] || 0;
+}
+
+function incrementAttempt(username, setId) {
+  const attempts = getAttempts();
+  const key = username + '|' + setId;
+  attempts[key] = (attempts[key] || 0) + 1;
+  saveAttempts(attempts);
+  return attempts[key];
+}
+
+// ============================================================
+//  সব সেটের ডেটা (Set 1-5 for Geography of India Unit 5: পরিবহণ ও যোগাযোগ)
+// ============================================================
+const allSets = {
+  1: {
+    name: 'Set 1',
+    icon: '🛣️',
+    topic: 'পরিবহণ ব্যবস্থার ধারণা ও সড়কপথ',
+    questions: [
+      {q: '"পরিবহণ কেবল পণ্যসামগ্রী ও মানুষের স্থানান্তরেই সাহায্য করে না, বরং মানুষের উন্নত সভ্যতার প্রতিটি পদক্ষেপে গুরুত্বপূর্ণ ভূমিকা পালন করে"—এ কথা কে বলেছেন?', opts: ['ডেভিড বার্লো', 'জিমারম্যান', 'অধ্যাপক মার্শাল', 'আলেকজান্ডার গ্রাহাম বেল'], ans: 2, exp: 'অধ্যাপক মার্শালের মতে, পরিবহণ মানুষের উন্নত সভ্যতার প্রতিটি পদক্ষেপে অত্যন্ত গুরুত্বপূর্ণ ভূমিকা ও দায়িত্ব পালন করে।'},
+      {q: 'পরিবহণ ব্যবস্থাকে প্রধানত কয়টি ভাগে ভাগ করা যায়?', opts: ['২টি', '৩টি', '৪টি', '৫টি'], ans: 1, exp: 'যানবাহনের প্রকৃতি ও পরিবহণ পথের অবস্থান অনুযায়ী পরিবহণ ব্যবস্থাকে প্রধানত ৩টি ভাগে ভাগ করা যায়— স্থলপথ, জলপথ এবং আকাশপথ।'},
+      {q: 'পাহাড়ি অঞ্চলে স্বল্প দূরত্বে খনিজ দ্রব্য পরিবহণের জন্য বা গভীর উপত্যকা পারাপারের জন্য কোন্ পথ নির্মাণ করা হয়?', opts: ['নলপথ', 'রজ্জুপথ (Ropeway)', 'দ্রুত পরিবহণ সড়ক', 'রেলপথ'], ans: 1, exp: 'দুর্গম পার্বত্য অঞ্চলে গভীর উপত্যকা পারাপার এবং বন্ধুর মালভূমি অঞ্চলে স্বল্প দূরত্বে খনিজ দ্রব্য পরিবহণের জন্য রজ্জুপথ নির্মাণ করা হয়।'},
+      {q: 'ভারতের সড়কপথের মোট দৈর্ঘ্যের নিরিখে বিশ্বে ভারতের স্থান কত?', opts: ['প্রথম', 'দ্বিতীয়', 'তৃতীয়', 'চতুর্থ'], ans: 1, exp: 'আমেরিকা যুক্তরাষ্ট্রের পরেই সড়কপথের মোট দৈর্ঘ্যের ক্ষেত্রে ভারতের স্থান বিশ্বে দ্বিতীয়।'},
+      {q: 'ভারতের মোট সড়কপথের মাত্র ২ শতাংশ জাতীয় সড়ক হলেও, এটি দিয়ে মোট যাত্রী ও পণ্যের কত শতাংশ পরিবহণ হয়?', opts: ['২০ শতাংশ', '৪০ শতাংশ', '৬০ শতাংশ', '৮০ শতাংশ'], ans: 1, exp: 'ভারতের মোট সড়কপথের মাত্র ২ শতাংশ জাতীয় সড়ক, কিন্তু এদেশে সড়কপথে মোট যত যাত্রী ও পণ্য পরিবহণ করা হয়, তার ৪০ শতাংশ হয় জাতীয় সড়কের মাধ্যমে।'},
+      {q: 'জাতীয় সড়কগুলির (National Highway) নির্মাণ ও রক্ষণাবেক্ষণের দায়িত্ব কার ওপর ন্যস্ত থাকে?', opts: ['ভারত সরকার (কেন্দ্রীয় সরকার)', 'রাজ্য সরকার', 'জেলা পরিষদ', 'গ্রাম পঞ্চায়েত'], ans: 0, exp: 'জাতীয় সড়কগুলি দেশের দুই বা ততোধিক রাজ্যের মধ্যে যোগাযোগ স্থাপন করে এবং এগুলির নির্মাণ ও রক্ষণাবেক্ষণের দায়িত্ব ভারত সরকারের।'},
+      {q: '১০০ বা তদূর্ধ্ব লোকবসতিসম্পন্ন গ্রামগুলিকে পাকা রাস্তার দ্বারা যুক্ত করার লক্ষ্য নিয়ে ২০০০ সালে কোন্ প্রকল্প শুরু হয়?', opts: ['প্রধানমন্ত্রী গ্রাম সড়ক যোজনা (PMGSY)', 'জাতীয় সড়ক উন্নয়ন প্রকল্প (NHDP)', 'ভারতমালা পরিযোজনা', 'সোনালি চতুর্ভুজ'], ans: 0, exp: '২০০০ সালের ডিসেম্বর মাসে শুরু হওয়া প্রধানমন্ত্রী গ্রাম সড়ক যোজনার (PMGSY) প্রধান লক্ষ্য হলো সংযোগহীন গ্রামগুলিকে পাকা রাস্তার দ্বারা যুক্ত করা।'},
+      {q: 'সীমান্ত সড়ক নির্মাণের জন্য \'বর্ডার রোডস অর্গানাইজেশন\' (BRO) কত সালে গঠিত হয়?', opts: ['১৯৪৭ সালে', '১৯৫০ সালে', '১৯৬০ সালে', '১৯৭৫ সালে'], ans: 2, exp: 'দেশের উত্তর ও উত্তর-পূর্ব সীমান্ত অঞ্চলে প্রতিরক্ষার ক্ষেত্রে গুরুত্বপূর্ণ সড়ক নির্মাণের জন্য ১৯৬০ সালের মে মাসে বর্ডার রোডস অর্গানাইজেশন গঠন করা হয়।'},
+      {q: 'দিল্লি থেকে পাকিস্তানের লাহোর পর্যন্ত বিস্তৃত সড়কপথটি কী ধরনের সড়কের উদাহরণ?', opts: ['জাতীয় সড়ক', 'দ্রুত পরিবহণ সড়ক', 'সীমান্ত সড়ক', 'আন্তর্জাতিক সড়কপথ'], ans: 3, exp: 'দুই বা তার বেশি দেশের মধ্য দিয়ে কোনো সড়ক বিস্তৃত থাকলে তাকে আন্তর্জাতিক সড়কপথ বলে, যেমন- দিল্লি থেকে পাকিস্তানের লাহোর পর্যন্ত বিস্তৃত সড়ক।'},
+      {q: 'সোনালি চতুর্ভুজ (Golden Quadrilateral) কোন্ চারটি মেট্রো শহরকে যুক্ত করেছে?', opts: ['দিল্লি-মুম্বাই-চেন্নাই-কলকাতা', 'দিল্লি-পুণে-বেঙ্গালুরু-কলকাতা', 'দিল্লি-গুরগাঁও-ফরিদাবাদ-মুম্বাই', 'কলকাতা-হায়দ্রাবাদ-বেঙ্গালুরু-চেন্নাই'], ans: 0, exp: 'ভারতের চারটি প্রধান মেট্রো শহর— দিল্লি, কলকাতা, মুম্বাই ও চেন্নাইকে যুক্তকারী ছয় চ্যানেলবিশিষ্ট সড়কপথ হলো সোনালি চতুর্ভুজ।'},
+      {q: 'সোনালি চতুর্ভুজের মোট দৈর্ঘ্য কত?', opts: ['৫০০০ কিমি', '৫৮৪৬ কিমি', '৭৩০০ কিমি', '৬৫০০ কিমি'], ans: 1, exp: 'সোনালি চতুর্ভুজের চারটি বাহুর মোট দৈর্ঘ্য হলো ৫৮৪৬ কিলোমিটার।'},
+      {q: 'ভারতের উত্তর-দক্ষিণ করিডর (North-South Corridor) উত্তরে শ্রীনগর থেকে দক্ষিণে কোন্ শহর পর্যন্ত বিস্তৃত?', opts: ['কোচি', 'তিরুবনন্তপুরম', 'কন্যাকুমারী', 'চেন্নাই'], ans: 2, exp: 'উত্তর-দক্ষিণ করিডরটি উত্তরে শ্রীনগর থেকে দক্ষিণে কন্যাকুমারী পর্যন্ত ৪০০ কিমি দীর্ঘ পথ দ্বারা সংযুক্ত করেছে।'},
+      {q: 'ভারতের পূর্ব-পশ্চিম করিডর (East-West Corridor) কোন্ দুটি স্থানকে যুক্ত করেছে?', opts: ['কলকাতা থেকে মুম্বাই', 'অসমের শিলচর থেকে গুজরাতের পোরবন্দর', 'গুয়াহাটি থেকে আমেদাবাদ', 'ডিব্রুগড় থেকে কন্যাকুমারী'], ans: 1, exp: 'পূর্ব-পশ্চিম করিডরটি অসমের শিলচরের সঙ্গে গুজরাতের পোরবন্দরকে ৩৩০০ কিমি দীর্ঘ পথ দ্বারা সংযুক্ত করেছে।'},
+      {q: 'ভারতের চারটি মেট্রো শহরকে অতি দ্রুতগামী রেল পরিবহণ ব্যবস্থার মাধ্যমে যুক্ত করার পরিকল্পনাকে কী বলে?', opts: ['সোনালি চতুর্ভুজ', 'হীরক চতুর্ভুজ (Diamond Quadrilateral)', 'বুলেট ট্রেন প্রকল্প', 'বন্দে ভারত প্রকল্প'], ans: 1, exp: 'সোনালি চতুর্ভুজকে অনুসরণ করে ভারতের ৪টি মেট্রো শহরকে অতি দ্রুতগামী রেল পরিবহণ ব্যবস্থার মাধ্যমে যুক্ত করার পরিকল্পনাকে হীরক চতুর্ভুজ বলে, যার কাজ ২০১৪ সালে শুরু হয়।'},
+      {q: 'বিশ্বের অনেক দেশে একনাগাড়ে ঘণ্টায় ১০০ কিমি বেগে যান চলাচলের উপযোগী রাজপথকে কী বলে?', opts: ['রাজ্য সড়ক', 'আন্তর্জাতিক সড়ক', 'দ্রুত পরিবহণ সড়ক (Express Highway)', 'সীমান্ত সড়ক'], ans: 2, exp: 'অতি দ্রুতগামী যান চলাচলের জন্য এক্সপ্রেস হাইওয়ে বা দ্রুত পরিবহণ সড়ক নির্মাণ করা হয়, যেখানে একনাগাড়ে ১০০ কিমি/ঘণ্টা বেগে গাড়ি চলতে পারে।'}
+    ]
+  },
+  2: {
+    name: 'Set 2',
+    icon: '🚂',
+    topic: 'রেলপথ, নলপথ ও রজ্জুপথ',
+    questions: [
+      {q: 'ভারতে প্রথম রেলপথ (মুম্বাই থেকে থানে) কত সালে স্থাপিত হয়?', opts: ['১৮৫৩ সালে', '১৮৭০ সালে', '১৯০৫ সালে', '১৯৪৭ সালে'], ans: 0, exp: '১৮৫৩ সালে ভারতে প্রথম রেলপথ স্থাপিত হয় মুম্বাই থেকে থানে পর্যন্ত ৩৪ কিমি পথে।'},
+      {q: 'ভারতে রেলওয়ে বোর্ড কত সালে গঠন করা হয়?', opts: ['১৮৫৩ সালে', '১৮৭৫ সালে', '১৯০৫ সালে', '১৯৫১ সালে'], ans: 2, exp: 'রেলপথ পরিচালনার সুবিধার জন্য ভারতে ১৯০৫ সালে রেলওয়ে বোর্ড গঠন করা হয়।'},
+      {q: 'রেলের দুটি পাটির মধ্যের দূরত্বকে কী বলা হয়?', opts: ['রুট', 'লেন', 'ট্র্যাক', 'গেজ (Gauge)'], ans: 3, exp: 'রেললাইনে রেলের দুটি পাটির মধ্যের দূরত্বকে গেজ (Gauge) বলে। ভূপ্রকৃতি ও অবস্থা অনুযায়ী এই গেজ ঠিক করা হয়।'},
+      {q: 'ভারতে ব্রড গেজ (Broad Gauge) রেলপথে দুটি পাটির মধ্যে দূরত্ব কত থাকে?', opts: ['১.০০০ মিটার', '১.৬৭৬ মিটার', '০.৭৬২ মিটার', '২.০০০ মিটার'], ans: 1, exp: 'ব্রড গেজ রেলপথে দুটি পাটির মধ্যে দূরত্ব থাকে ১.৬৭৬ মিটার, যা ভারতের বেশিরভাগ রেলপথে ব্যবহৃত হয়।'},
+      {q: 'মিটার গেজ (Meter Gauge) রেলপথে দুটি পাটির মধ্যে দূরত্ব কত?', opts: ['১ মিটার', '১.৫ মিটার', '০.৭৬২ মিটার', '০.৬১০ মিটার'], ans: 0, exp: 'মিটার গেজ রেলপথে দুটি পাটির মধ্যে দূরত্ব ঠিক ১ মিটার থাকে।'},
+      {q: 'ন্যারো গেজ (Narrow Gauge) রেলপথে দুটি পাটির মধ্যে দূরত্ব কত থাকে?', opts: ['১.৬৭৬ মি', '১.০০০ মি', '০.৭৬২ মি অথবা ০.৬১০ মি', '০.৫০০ মি'], ans: 2, exp: 'পাহাড়ি বা দুর্গম অঞ্চলে ব্যবহৃত ন্যারো গেজ রেলপথে দুটি পাটির মধ্যে দূরত্ব ০.৭৬২ মিটার অথবা ০.৬১০ মিটার হয়ে থাকে।'},
+      {q: 'ভারতের দীর্ঘতম রেলপথ কোনটি?', opts: ['শ্রীনগর থেকে কন্যাকুমারী', 'ডিব্রুগড় থেকে কন্যাকুমারী', 'শিলচর থেকে পোরবন্দর', 'কলকাতা থেকে মুম্বাই'], ans: 1, exp: 'ডিব্রুগড় থেকে কন্যাকুমারী হলো ভারতের দীর্ঘতম রেলপথ (৪১৮৯ কিমি)।'},
+      {q: 'ভারতে প্রথম ভূগর্ভস্থ রেলপথ বা মেট্রো রেল কোথায় চালু হয়?', opts: ['দিল্লিতে', 'মুম্বাইতে', 'বেঙ্গালুরুতে', 'কলকাতায়'], ans: 3, exp: 'ভারতের প্রথম ভূগর্ভস্থ রেলপথ বা পাতালরেল চালু হয় কলকাতায় ১৯৮৪ সালে।'},
+      {q: 'ভারতের ব্যস্ততম ও বৃহত্তম মেট্রো রেল ব্যবস্থা কোন্ শহরে রয়েছে?', opts: ['কলকাতা', 'মুম্বাই', 'দিল্লি', 'চেন্নাই'], ans: 2, exp: '২০০২ সালে চালু হওয়া দিল্লি মেট্রো হলো ভারতের ব্যস্ততম ও বৃহত্তম মেট্রোরেল ব্যবস্থা, যার মোট দৈর্ঘ্য ৩৫০.৪২ কিমি।'},
+      {q: 'ভারতের সবচেয়ে বেশি ভূগর্ভস্থ মেট্রো স্টেশন কোন্ শহরে রয়েছে?', opts: ['কলকাতা', 'দিল্লি', 'মুম্বাই', 'জয়পুর'], ans: 2, exp: '২০১৪ সালে চালু হওয়া মুম্বাই মেট্রোতে ভারতের সবচেয়ে বেশি সংখ্যক ভূগর্ভস্থ মেট্রোস্টেশন (১৪টি) রয়েছে।'},
+      {q: 'খনিজ তেল ও প্রাকৃতিক গ্যাস সরবরাহ করার জন্য কোন্ পরিবহণ মাধ্যম সবচেয়ে উপযোগী?', opts: ['রেলপথ', 'সড়কপথ', 'পাইপ লাইন বা নলপথ', 'রজ্জুপথ'], ans: 2, exp: 'প্রাকৃতিক গ্যাস, খনিজ তেল, জল প্রভৃতি দূরবর্তী স্থানে সরবরাহ করার জন্য নলপথ বা পাইপ লাইনের গুরুত্ব অপরিসীম।'},
+      {q: 'নাহারকাটিয়া-মোরান-নুনমাটি-বারাউনি কোন্ পরিবহণ ব্যবস্থার উদাহরণ?', opts: ['রজ্জুপথ', 'পাইপ লাইন', 'অভ্যন্তরীণ জলপথ', 'রেলপথ'], ans: 1, exp: 'নাহারকাটিয়া-মোরান-নুনমাটি-বারাউনি, হলদিয়া-বারাউনি ইত্যাদি হলো ভারতের উল্লেখযোগ্য খনিজ তেল ও গ্যাস সরবরাহকারী পাইপ লাইন।'},
+      {q: 'দার্জিলিং রজ্জুপথ (Ropeway)-এর দৈর্ঘ্য প্রায় কত?', opts: ['৪.১ কিমি', '১.১ কিমি', '৮ কিমি', '১৫ কিমি'], ans: 2, exp: 'ভারতের পাহাড়ি অঞ্চলে যোগাযোগের অন্যতম মাধ্যম দার্জিলিং রজ্জুপথের দৈর্ঘ্য প্রায় ৮ কিমি।'},
+      {q: 'ভারতে কোন্ পরিবহণ সংস্থা সরকারি মালিকানায় পরিচালিত বৃহত্তম সংস্থা যেখানে প্রায় ১২ লক্ষ মানুষ নিযুক্ত আছে?', opts: ['ভারতীয় ডাক', 'ভারতীয় স্টেট ব্যাংক', 'এয়ার ইন্ডিয়া', 'ভারতীয় রেলপথ'], ans: 3, exp: 'ভারতে রেলপথ সরকারের মালিকানায় ও তত্ত্বাবধানে পরিচালিত বৃহত্তম সংস্থা, যেখানে প্রায় ১২ লক্ষ মানুষ জীবিকা অর্জন করে।'},
+      {q: 'কলকাতা মেট্রোয় প্রস্তাবিত পূর্ব-পশ্চিম মেট্রো রেলপথটি কোন্ দুটি স্থানকে যুক্ত করছে/করবে?', opts: ['নিউ গড়িয়া থেকে দক্ষিণেশ্বর', 'সেক্টর-V থেকে হাওড়া ময়দান', 'ঠাকুরপুকুর থেকে এসপ্ল্যানেড', 'জোকা থেকে বিবাদী বাগ'], ans: 1, exp: 'প্রস্তাবিত পূর্ব-পশ্চিম মেট্রোরেলপথটি সেক্টর-V থেকে হাওড়া ময়দান পর্যন্ত বিস্তৃত, যার অন্তর্গত সেক্টর-V থেকে শিয়ালদহ পর্যন্ত মেট্রো পথ ইতিমধ্যেই চালু হয়েছে।'}
+    ]
+  },
+  3: {
+    name: 'Set 3',
+    icon: '🚢',
+    topic: 'জলপথ ও আকাশপথ',
+    questions: [
+      {q: 'ভারতের অভ্যন্তরীণ জলপথ পরিবহণে কোন্ নদীর ভূমিকা সবচেয়ে গুরুত্বপূর্ণ?', opts: ['গোদাবরী', 'কৃষ্ণা', 'গঙ্গা ও তার উপনদী-শাখানদী', 'কাবেরী'], ans: 2, exp: 'ভারতের প্রধান অভ্যন্তরীণ নদীপথ হলো গঙ্গা ও তার উপনদী, শাখানদী ও খালের সমন্বয়ে গড়ে ওঠা জলপথ।'},
+      {q: 'কোন্ পরিবহণ ব্যবস্থাকে "উন্নয়নের জীবনরেখা" বলা হয়?', opts: ['সড়কপথকে', 'জলপথকে', 'আকাশপথকে', 'রেলপথকে'], ans: 1, exp: 'জলপথ নির্মাণ ও রক্ষণাবেক্ষণে কোনো খরচ নেই বলে এটি সস্তা এবং ভারী পণ্য পরিবহণে আদর্শ। তাই জলপথকে উন্নয়নের জীবনরেখা বলা হয়।'},
+      {q: 'গঙ্গা নদীর ওপর হুগলি নদীর মোহানা থেকে পাটনা পর্যন্ত কত কিলোমিটার পথ অভ্যন্তরীণ জলপথ হিসেবে ব্যবহৃত হয়?', opts: ['৫০০ কিমি', '৭৫০ কিমি', '১০০ কিমি', '১৫০০ কিমি'], ans: 1, exp: 'হুগলি নদীর মোহানা থেকে পাটনা পর্যন্ত প্রায় ৭৫০ কিমি পথ অভ্যন্তরীণ জলপথ হিসেবে ব্যবহৃত হয়, যেখানে যাত্রীবাহী স্টিমার চলাচল করতে পারে।'},
+      {q: 'দক্ষিণ ভারতের কোন্ খালটি কৃষ্ণা ও কাবেরী নদীকে যুক্ত করে জলপথ হিসেবে ব্যবহৃত হয়?', opts: ['ইডেন খাল', 'হিজলি খাল', 'বাকিংহাম খাল', 'গঙ্গাখাল'], ans: 2, exp: 'কৃষ্ণা ও কাবেরী নদীর সংযোগকারী বাকিংহাম খাল ভারতের একটি উল্লেখযোগ্য অভ্যন্তরীণ খালপথ।'},
+      {q: 'যে নির্দিষ্ট সমুদ্রপথ বরাবর জাহাজগুলি চলাচল করে, সেই পথকে কী বলে?', opts: ['শিপিং লাইন', 'ট্রাম্প', 'শিপিং লেন (Shipping Lane)', 'ওশান নেটওয়ার্ক'], ans: 2, exp: 'যে নির্দিষ্ট সমুদ্রপথ বরাবর জাহাজগুলি চলাচল করে, সেই পথকে শিপিং লেন বলে। একে ওশান লেন-ও বলা হয়।'},
+      {q: 'একটি নির্দিষ্ট সময়সারণি অনুসরণ করে নির্দিষ্ট পথে পণ্য ও যাত্রী পরিবহণকারী আন্তর্জাতিক জাহাজ সংস্থাকে কী বলে?', opts: ['ট্রাম্প', 'লাইনার (Liner)', 'ফেরি', 'স্টিমার'], ans: 1, exp: 'জলপথে একটি নির্দিষ্ট পথে পণ্য ও যাত্রী পরিবহণ করার সংস্থাকে লাইনার (liner) বলে, যা নির্দিষ্ট সময়সারণি অনুসরণ করে চলাচল করে।'},
+      {q: 'যেসব আন্তর্জাতিক জাহাজের কোনো নির্দিষ্ট যাত্রাপথ বা সময়সারণি নেই, তাদের কী বলে?', opts: ['ট্রাম্প (Tramp)', 'লাইনার', 'ক্রুজ', 'কার্গো'], ans: 0, exp: 'ট্রাম্প (tramp) হলো একটি আন্তর্জাতিক জাহাজ পরিসেবা যাদের কোনো নির্দিষ্ট যাত্রাপথ বা সময়সারণি নেই। যেভাবে পণ্য সরবরাহের বরাত আসে, সেভাবেই এরা কাজ করে।'},
+      {q: 'কান্ডালা, মুম্বাই, মার্মাগাঁও, কোচি বন্দরগুলি ভারতের কোন্ উপকূলে অবস্থিত?', opts: ['পূর্ব উপকূলে', 'পশ্চিম উপকূলে', 'আন্দামান উপকূলে', 'বঙ্গোপসাগর উপকূলে'], ans: 1, exp: 'কান্ডালা (গুজরাত), মুম্বাই, জওহরলাল নেহরু, মার্মাগাঁও (গোয়া), নিউ ম্যাঙ্গালোর এবং কোচি (কেরল) হলো ভারতের পশ্চিম উপকূলে অবস্থিত প্রধান বন্দর।'},
+      {q: 'পারাদীপ, বিশাখাপত্তনম, এন্নোর, তুতিকোরিন বন্দরগুলি ভারতের কোন্ উপকূলে অবস্থিত?', opts: ['পশ্চিম উপকূলে', 'আরব সাগর উপকূলে', 'পূর্ব উপকূলে', 'মালাবার উপকূলে'], ans: 2, exp: 'কলকাতা, পারাদীপ (ওডিশা), বিশাখাপত্তনম, এন্নোর, চেন্নাই এবং তুতিকোরিন হলো ভারতের পূর্ব উপকূলে অবস্থিত প্রথম শ্রেণির বন্দর।'},
+      {q: 'সবরকম পরিবহণ ব্যবস্থার মধ্যে সবচেয়ে আধুনিক এবং দ্রুতগতিসম্পন্ন পরিবহণ কোন্টি?', opts: ['বুলেট ট্রেন', 'মেট্রো রেল', 'আকাশপথ (Airways)', 'এক্সপ্রেস হাইওয়ে'], ans: 2, exp: 'সবরকম পরিবহণ ব্যবস্থার মধ্যে আকাশপথ বা বিমানপথ সবচেয়ে আধুনিক এবং দ্রুতগতিসম্পন্ন।'},
+      {q: 'ভারতে মোট কয়টি প্রথম শ্রেণির সমুদ্র বন্দর রয়েছে?', opts: ['১০টি', '১২টি', '১৫টি', '২০টি'], ans: 1, exp: 'ভারতে আন্তর্জাতিক বাণিজ্যের জন্য ১২টি প্রথম শ্রেণির এবং ১৮৪টি ছোটো বন্দর আছে।'},
+      {q: 'নেতাজি সুভাষচন্দ্র বোস আন্তর্জাতিক বিমানবন্দরটি ভারতের কোথায় অবস্থিত?', opts: ['দিল্লি', 'মুম্বাই', 'কলকাতা', 'চেন্নাই'], ans: 2, exp: 'নেতাজি সুভাষচন্দ্র বোস বিমানবন্দরটি কলকাতায় অবস্থিত, যা ভারতের একটি প্রধান আন্তর্জাতিক বিমানবন্দর।'},
+      {q: 'ছত্রপতি শিবাজি আন্তর্জাতিক বিমানবন্দর ভারতের কোন্ শহরে অবস্থিত?', opts: ['পুণে', 'মুম্বাই', 'নাগপুর', 'আমেদাবাদ'], ans: 1, exp: 'ছত্রপতি শিবাজি আন্তর্জাতিক বিমানবন্দর ভারতের মহারাষ্ট্রের মুম্বাই শহরে অবস্থিত।'},
+      {q: 'ইন্দিরা গান্ধি আন্তর্জাতিক বিমানবন্দর কোথায় অবস্থিত?', opts: ['দিল্লি', 'চণ্ডীগড়', 'লখনউ', 'অমৃতসর'], ans: 0, exp: 'ভারতের সর্ববৃহৎ আন্তর্জাতিক বিমানবন্দরগুলির মধ্যে অন্যতম হলো ইন্দিরা গান্ধি বিমানবন্দর, যা দিল্লিতে অবস্থিত।'},
+      {q: 'প্রাকৃতিক দুর্যোগের সময় ত্রাণের কাজে ও জরুরি অবস্থায় কোন্ পরিবহণ মাধ্যম সবচেয়ে বেশি উপযোগী?', opts: ['সড়কপথ', 'রেলপথ', 'জলপথ', 'আকাশপথ (Airways)'], ans: 3, exp: 'পচনশীল দ্রব্য পাঠানো, জরুরি কাজে যাতায়াত এবং বিশেষ করে প্রাকৃতিক দুর্যোগের সময় ত্রাণের কাজে আকাশপথে বিমানবাহিনী অত্যন্ত গুরুত্বপূর্ণ ভূমিকা পালন করে।'}
+    ]
+  },
+  4: {
+    name: 'Set 4',
+    icon: '📡',
+    topic: 'যোগাযোগ ব্যবস্থা ও গণযোগাযোগ',
+    questions: [
+      {q: 'আলেকজান্ডার গ্রাহাম বেল কত সালে প্রথম টেলিফোন আবিষ্কার করেন?', opts: ['১৮৫০ সালে', '১৮৭৫ সালে', '১৯০১ সালে', '১৯২০ সালে'], ans: 1, exp: 'যোগাযোগ ব্যবস্থার প্রভূত উন্নতি ঘটে ১৮৭৫ সালে, যখন আলেকজান্ডার গ্রাহাম বেল প্রথম টেলিফোন আবিষ্কার করেন।'},
+      {q: '\'Communication\' বা যোগাযোগ কথাটি লাতিন কোন্ শব্দ থেকে এসেছে?', opts: ['কমিনিস (Cominis)', 'কমুনিকেয়ার (Communicare)', 'কমুনিটি (Community)', 'কমার্স (Commerce)'], ans: 1, exp: '\'Communication\' কথাটি লাতিন শব্দ \'কমুনিকেয়ার\' (communicare) থেকে এসেছে, যার অর্থ সর্বসাধারণের গোচরে বা নজরে আনা।'},
+      {q: 'যোগাযোগ প্রক্রিয়ার প্রধান উপাদান কে, যাঁর কাছ থেকে যোগাযোগ শুরু হয়?', opts: ['গ্রাহক (Receiver)', 'মাধ্যম (Media)', 'প্রেরক (Sender)', 'ফিডব্যাক'], ans: 2, exp: 'যোগাযোগ প্রক্রিয়া শুরু হয় প্রেরকের কাছ থেকে, তাই প্রেরক যোগাযোগ প্রক্রিয়ার অন্যতম প্রধান উপাদান।'},
+      {q: 'গ্রাহক কোনো তথ্য গ্রহণ করার পর যে প্রতিক্রিয়া ব্যক্ত করে, তাকে কী বলে?', opts: ['মাধ্যম', 'বিষয়', 'ফিডব্যাক (Feedback)', 'প্রেরণা'], ans: 2, exp: 'যোগাযোগ প্রক্রিয়ায় ফিডব্যাক বলতে কোনো তথ্য গ্রাহক গ্রহণ করার পর তার প্রতিক্রিয়াকে বোঝায়, যা যোগাযোগ প্রক্রিয়ার কার্যকারিতা প্রমাণ করে।'},
+      {q: 'কোনো প্রতিষ্ঠানের একজন ব্যক্তির সঙ্গে অন্য ব্যক্তি বা ব্যক্তিদের যোগাযোগ স্থাপিত হলে তাকে কী বলে?', opts: ['অন্তর্ব্যক্তিক যোগাযোগ', 'আন্তর্ব্যক্তিক যোগাযোগ (Interpersonal Communication)', 'গণ যোগাযোগ', 'ই-কমার্স'], ans: 1, exp: 'কোনো প্রতিষ্ঠানের একজন ব্যক্তির সঙ্গে অন্য ব্যক্তি বা ব্যক্তিদের যোগাযোগ স্থাপিত হলে (যেমন- টেলিফোনে কথা বলা) তাকে আন্তর্ব্যক্তিক যোগাযোগ বলে।'},
+      {q: 'যখন কোনো ব্যক্তি নিজের সঙ্গেই নিজে যোগাযোগ করে (যেমন- ডায়েরি লেখা, কবিতা লেখা), তাকে কী বলে?', opts: ['অন্তর্ব্যক্তিক যোগাযোগ (Intrapersonal Communication)', 'আন্তর্ব্যক্তিক যোগাযোগ', 'গণ যোগাযোগ', 'মুখোমুখি যোগাযোগ'], ans: 0, exp: 'যখন একজন ব্যক্তি তাঁর নিজের সঙ্গে বিভিন্ন উপায়ে যোগাযোগ করে (যেমন- কবিতা, গল্প বা ডায়েরি লেখা), তখন তাকে অন্তর্ব্যক্তিক যোগাযোগ বলে।'},
+      {q: 'যখন প্রেরক কোনো তথ্য বা ধারণা একই সময়ে একাধিক গ্রাহকের কাছে পৌঁছে দেয়, তখন তাকে কী বলে?', opts: ['আন্তর্ব্যক্তিক যোগাযোগ', 'অন্তর্ব্যক্তিক যোগাযোগ', 'গণ যোগাযোগ (Mass Communication)', 'টেলিমেডিসিন'], ans: 2, exp: 'যখন প্রেরক কোনো তথ্য বা ধারণা একই সময়ে একাধিক গ্রাহকের কাছে পৌঁছে দিতে পারে, তখন তাকে গণ যোগাযোগ বলে।'},
+      {q: 'নীচের কোনটি গণ যোগাযোগের (Mass Communication) উদাহরণ?', opts: ['টেলিফোনে কথা বলা', 'ডায়েরি লেখা', 'সংবাদপত্র, বেতার ও টিভি', 'নিজের মনে চিন্তা করা'], ans: 2, exp: 'সংবাদপত্র, বেতার বা টিভি চ্যানেল ইত্যাদি হলো গণ যোগাযোগের প্রকৃষ্ট উদাহরণ, যেখানে একজন প্রেরক বহু মানুষের কাছে তথ্য পৌঁছে দেন।'},
+      {q: 'যোগাযোগ প্রক্রিয়ায় ভাষা, শব্দ, অঙ্গভঙ্গি, সুর ইত্যাদি কোন্ উপাদানের অন্তর্গত?', opts: ['প্রেরক', 'মাধ্যম (Media)', 'গ্রাহক', 'ফিডব্যাক'], ans: 1, exp: 'বিষয়কে গ্রাহকের কাছে পৌঁছে দেওয়ার জন্য বাচনিক বা অবাচনিক মাধ্যম প্রয়োজন। ভাষা, শব্দ, অঙ্গভঙ্গি, সুর ইত্যাদি হলো মাধ্যমের অন্তর্গত।'},
+      {q: 'মুখোমুখি যোগাযোগ বা শ্রেণিকক্ষে শিক্ষকের ক্লাস নেওয়া কী ধরনের যোগাযোগের মাধ্যম?', opts: ['গণ যোগাযোগের প্রাচীন ও প্রত্যক্ষ মাধ্যম', 'পরোক্ষ যোগাযোগ', 'অন্তর্ব্যক্তিক যোগাযোগ', 'ই-কমার্স'], ans: 0, exp: 'মুখোমুখি যোগাযোগ গণ যোগাযোগের সবচেয়ে প্রাচীন এবং চিরায়ত পদ্ধতি। পাঠশালায় বা স্কুল-কলেজে শিক্ষকের ক্লাস নেওয়া এর আদর্শ উদাহরণ।'},
+      {q: 'যোগাযোগের মাধ্যমগুলির মধ্যে কোনটি আধুনিকতম এবং তারবিহীন ব্যবস্থা?', opts: ['টেলিগ্রাম', 'সংবাদপত্র', 'মোবাইল ফোন', 'পোস্টকার্ড'], ans: 2, exp: 'বর্তমানে যোগাযোগ রক্ষার সবচেয়ে সহজ ও আধুনিক মাধ্যম হলো মোবাইল ফোন। এটি একটি তারবিহীন ব্যবস্থা বলে যেকোনো দুর্গম জায়গায় সহজে যোগাযোগ রক্ষা করা যায়।'},
+      {q: 'যোগাযোগ প্রক্রিয়ায় পরিবেশের আবহাওয়া বা ভাষাগত প্রতিবন্ধকতা কী হিসেবে কাজ করে?', opts: ['মাধ্যম', 'বিষয়', 'ফিডব্যাক', 'বাধা (Constrain)'], ans: 3, exp: 'যোগাযোগ প্রক্রিয়ায় কিছু অবাঞ্ছিত ঘটনা সঠিক যোগাযোগে বাধা সৃষ্টি করে। যেমন- শারীরিক স্বাস্থ্য, আবহাওয়া, ভাষাগত প্রতিবন্ধকতা ইত্যাদি অন্যতম বড়ো বাধা হিসেবে কাজ করে।'},
+      {q: 'মার্কিন চিন্তাবিদ ডেভিড বার্লোর মতে, যোগাযোগ স্থাপন হল প্রেরক ও গ্রাহকের অভিজ্ঞতার এক কী ধরনের প্রক্রিয়া?', opts: ['একমুখী প্রক্রিয়া', 'কেবল তথ্য সংগ্রহের প্রক্রিয়া', 'ক্রিয়াপ্রতিক্রিয়া প্রক্রিয়া', 'যান্ত্রিক প্রক্রিয়া'], ans: 2, exp: 'ডেভিড বার্লোর মতে, যোগাযোগ স্থাপন হলো প্রেরক ও গ্রাহকের অভিজ্ঞতার এক ক্রিয়াপ্রতিক্রিয়া প্রক্রিয়া, যার মাধ্যমে উভয়েই একটি সাধারণ ধারণায় উপনীত হয়।'},
+      {q: 'মানুষের অনুভূতি, অভিপ্রায় এবং আবেগের আদানপ্রদান কোন যোগাযোগের মাধ্যমে সবচেয়ে ভালোভাবে ঘটে?', opts: ['অন্তর্ব্যক্তিক যোগাযোগ', 'আন্তর্ব্যক্তিক যোগাযোগ (Interpersonal)', 'ই-মেইল', 'সংবাদপত্র পড়া'], ans: 1, exp: 'কোনো কারখানা বা অফিসে শ্রমিকদের মধ্যে কথা বলা বা ব্যক্তিগত স্তরে আলোচনার মতো আন্তর্ব্যক্তিক যোগাযোগের ক্ষেত্রে অনুভূতি, অভিপ্রায় এবং আবেগের আদানপ্রদান হয়।'},
+      {q: 'গণ যোগাযোগের একটি বলিষ্ঠ পরোক্ষ মাধ্যম কী, যার মাধ্যমে শিক্ষার্থীরা লেখকের মনের ভাব গ্রহণ করে?', opts: ['বই-পত্রপত্রিকা', 'মুখোমুখি ক্লাস', 'মোবাইল ফোন', 'ই-কমার্স'], ans: 0, exp: 'বই, পত্রপত্রিকা গণ যোগাযোগের বলিষ্ঠ মাধ্যম। এ ধরনের যোগাযোগে ছাত্রছাত্রী বা শিক্ষার্থীরা পরোক্ষে লেখকের মনের ভাব গ্রহণ করে।'}
+    ]
+  },
+  5: {
+    name: 'Set 5',
+    icon: '🛰️',
+    topic: 'আধুনিক যোগাযোগ (উপগ্রহ ও ইন্টারনেট) এবং বিবিধ',
+    questions: [
+      {q: 'বাড়িতে বসে কম্পিউটার ও ইন্টারনেট ব্যবস্থার মাধ্যমে অনলাইনে পণ্য বা সেবার আদানপ্রদান বা কেনাবেচাকে কী বলে?', opts: ['টেলিমেডিসিন', 'ই-কমার্স (e-commerce)', 'টেলিশিক্ষা', 'ই-মেইল'], ans: 1, exp: 'বাড়িতে বসে কম্পিউটার ও ইন্টারনেট ব্যবস্থার মাধ্যমে অনলাইনে পণ্য বা সেবার আদানপ্রদান বা কেনাবেচাকে ই-কমার্স বলে।'},
+      {q: 'বিশ্বের বৃহত্তম ইলেকট্রনিক নেটওয়ার্ক সিস্টেম কোনটি?', opts: ['টেলিভিশন', 'রেডিও', 'ইন্টারনেট (Internet)', 'স্যাটেলাইট'], ans: 2, exp: 'ইন্টারনেট হলো বর্তমানে যোগাযোগ ব্যবস্থার সবচেয়ে উন্নত পরিসেবা এবং এটি বিশ্বের বৃহত্তম ইলেকট্রনিক নেটওয়ার্ক সিস্টেম।'},
+      {q: 'ভারতের কোন কৃত্রিম উপগ্রহটি মূলত দূরশিক্ষা, টেলিশিক্ষা ও ভার্চুয়াল ক্লাসরুমের সুবিধার জন্য ব্যবহৃত হয়?', opts: ['EDUSAT (GSAT-3)', 'CARTOSAT', 'RISAT', 'INSAT'], ans: 0, exp: 'EDUSAT (GSAT-3), 2004 সালে উৎক্ষেপিত হয় যা দূরশিক্ষা, টেলিশিক্ষা এবং ভার্চুয়াল ক্লাসরুমের সুবিধার জন্য ব্যবহার করা হয়।'},
+      {q: 'টেলিযোগাযোগ, দূরসম্প্রচার এবং টেলিমেডিসিনের জন্য ভারতের কোন বহুমুখী উপগ্রহ সিরিজ ব্যবহৃত হয়?', opts: ['RISAT Series', 'INSAT Series (Indian National Satellite System)', 'CARTOSAT Series', 'IRS'], ans: 1, exp: 'INSAT Series-এর উদ্দেশ্য হলো টেলিযোগাযোগ, দূরসম্প্রচার ও টেলি-শিক্ষা। এটি বহুমুখী উপগ্রহ যা টেলিমেডিসিন ও শিক্ষায় সহায়তা করে।'},
+      {q: 'পৃথিবী পর্যবেক্ষণ, মানচিত্রায়ন এবং শহরের পরিকল্পনার জন্য ভারতের কোন উপগ্রহ সিরিজ ব্যবহৃত হয়?', opts: ['GSAT Series', 'EDUSAT', 'CARTOSAT Series', 'INSAT Series'], ans: 2, exp: 'CARTOSAT Series উপগ্রহের উদ্দেশ্য হলো পৃথিবী পর্যবেক্ষণ ও মানচিত্রায়ন। এটি উন্নততর স্বাস্থ্য পরিকাঠামো ও শহরের পরিকল্পনায় ব্যবহার করা হয়।'},
+      {q: 'রাডার ইমেজিং স্যাটেলাইট বা রিমোট সেন্সিং উপগ্রহ হিসেবে বিপর্যয় ব্যবস্থাপনায় সহায়তা করে ভারতের কোন উপগ্রহ?', opts: ['RISAT Series', 'CARTOSAT Series', 'GSAT Series', 'EDUSAT'], ans: 0, exp: 'RISAT Series (Radar Imaging Satellite) হলো রিমোট সেন্সিং উপগ্রহ যা বিপর্যয় ব্যবস্থাপনায় সহায়তা করতে পরোক্ষভাবে নাগরিক স্বাস্থ্য ও সুরক্ষা প্রদান করে।'},
+      {q: 'অনলাইনে চিকিৎসা প্রদান (টেলি-মেডিসিন), বিপর্যয় ব্যবস্থাপনা ও প্রত্যন্ত এলাকায় শিক্ষার সুবিধার জন্য কোন উপগ্রহ সিরিজ বেশি কার্যকর?', opts: ['RISAT Series', 'CARTOSAT Series', 'GSAT Series', 'EDUSAT'], ans: 2, exp: 'GSAT Series একটি যোগাযোগকারী উপগ্রহ যা টেলিশিক্ষা, টেলিমেডিসিন, অনলাইন চিকিৎসা প্রদান এবং বিপর্যয় ব্যবস্থাপনায় ব্যবহৃত হয়।'},
+      {q: 'ভারতের জাতীয় পরিভাষায় \'Telecommunication\' বা দূর-সঞ্চার বলতে কী বোঝায়?', opts: ['ডাকব্যবস্থা', 'সংবাদপত্র', 'দ্রুতগতিতে তথ্য প্রেরণ (যেমন টেলিগ্রাম)', 'বিমান পরিবহণ'], ans: 2, exp: 'ভারতে যোগাযোগের জাতীয় পারিভাষিক শব্দ হলো সঞ্চার। দূর সঞ্চার (Telecommunication)-এর মাধ্যমে দ্রুতগতিতে তথ্য প্রেরণ করা সম্ভব হয়, যেমন টেলিগ্রাম।'},
+      {q: 'সোনালি চতুর্ভুজ (Golden Quadrilateral) প্রকল্প অনুযায়ী কলকাতা থেকে দিল্লির দূরত্ব কত ধরা হয়েছে?', opts: ['১২৯০ কিমি', '১৪১৯ কিমি', '১৬৮৪ কিমি', 'প্রায় ১৪৫৩ কিমি'], ans: 3, exp: 'সোনালি চতুর্ভুজে কলকাতা থেকে দিল্লি পর্যন্ত দূরত্ব প্রায় ১৪৫৩ কিমি।'},
+      {q: 'ভারতের কোন রাজ্যগুলিতে অভ্যন্তরীণ জলপথ হিসেবে হ্রদ ও উপহ্রদের ব্যবহার দেখা যায়?', opts: ['পাঞ্জাব ও হরিয়ানা', 'ওডিশার চিলকা, অন্ধ্রপ্রদেশের কোলেরু, তামিলনাড়ুর পুলিকট', 'রাজস্থান ও গুজরাত', 'জম্মু ও কাশ্মীর'], ans: 1, exp: 'ভারতের বড়ো বড়ো হ্রদ ও উপহ্রদগুলিও জলপথ পরিবহণে গুরুত্বপূর্ণ। ওডিশার চিলকা, অন্ধ্রপ্রদেশের কোলেরু, তামিলনাড়ুর পুলিকট প্রভৃতি হ্রদ পণ্য ও যাত্রী পরিবহণে বিশেষ উল্লেখযোগ্য।'},
+      {q: 'সোনালি চতুর্ভুজের চারটি বাহুর মধ্যে সবচেয়ে দীর্ঘ বাহু কোনটি?', opts: ['দিল্লি থেকে মুম্বাই', 'মুম্বাই থেকে চেন্নাই', 'চেন্নাই থেকে কলকাতা', 'কলকাতা থেকে দিল্লি'], ans: 2, exp: 'সোনালি চতুর্ভুজের চারটি বাহুর দৈর্ঘ্য সমান নয়। এর মধ্যে চেন্নাই থেকে কলকাতার দূরত্ব সর্বাধিক, ১৬৮৪ কিমি।'},
+      {q: 'ভারতের মোট সড়কপথের কত অংশ কাঁচা রাস্তা?', opts: ['প্রায় এক-চতুর্থাংশ', 'প্রায় অর্ধেক', 'প্রায় তিন-চতুর্থাংশ', 'মাত্র ১০ শতাংশ'], ans: 1, exp: 'ভারতের মোট সড়কপথের প্রায় অর্ধেকই কাঁচা রাস্তা, বাকি অর্ধেক পাকা রাস্তা।'},
+      {q: 'ভারতের কোন অঞ্চলে আকাশপথই পরিবহণের অন্যতম প্রধান উপায়?', opts: ['দাক্ষিণাত্যের মালভূমি অঞ্চলে', 'উত্তর ও উত্তর-পূর্বের পার্বত্য অঞ্চলে', 'গঙ্গা-ব্রহ্মপুত্র সমভূমি অঞ্চলে', 'পশ্চিমের মরুভূমি অঞ্চলে'], ans: 1, exp: 'ভারতের উত্তর ও উত্তর-পূর্বের পার্বত্য অঞ্চলে সড়কপথ ও রেলপথের অভাব আছে। ওইসব অঞ্চলে আকাশপথই পরিবহণের অন্যতম প্রধান উপায়।'},
+      {q: 'ভারতের কোন রাজ্যে কোচি (Kochi) সমুদ্রবন্দরটি অবস্থিত?', opts: ['কর্ণাটক', 'তামিলনাড়ু', 'কেরল', 'অন্ধ্রপ্রদেশ'], ans: 2, exp: 'কোচি (কেরল) হলো ভারতের পশ্চিম উপকূলে অবস্থিত একটি প্রথম শ্রেণির সমুদ্র বন্দর।'},
+      {q: 'দেশের মধ্যে যাত্রীসংখ্যার ৮৫ শতাংশ এবং পণ্যদ্রব্যের ৭০ শতাংশ কোন্ পথে পরিবাহিত হয়?', opts: ['রেলপথে', 'আকাশপথে', 'জলপথে', 'সড়কপথে'], ans: 3, exp: 'দেশের মধ্যে যাত্রীসংখ্যার ৮৫ শতাংশ এবং পণ্যদ্রব্যের ৭০ শতাংশ রাজপথে বা সড়কপথে পরিবাহিত হয়।'}
+    ]
+  }
+};
+
+// ============================================================
+//  গ্লোবাল ভেরিয়েবল
+// ============================================================
+const LABELS = ['ক', 'খ', 'গ', 'ঘ'];
+let currentSetId = 1;
+let cur = 0, score = 0, wrong = 0, answered = false, timerInterval, timeLeft = 10 * 60;
+let userAnswers = [];
+let isLoggedIn = false;
+let currentUser = null;
+let pendingSetId = null;
+
+// ============================================================
+//  হাব পেজ বিল্ড
+// ============================================================
+function buildHub() {
+  const grid = document.getElementById('setGrid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= TOTAL_SETS; i++) {
+    const set = allSets[i];
+    const card = document.createElement('div');
+    card.className = 'set-card';
+    
+    // Check if user is logged in and get attempt count
+    let attemptCount = 0;
+    let isLocked = false;
+    if (currentUser) {
+      attemptCount = getAttemptCount(currentUser.username, i);
+      isLocked = attemptCount >= MAX_ATTEMPTS;
+      if (isLocked) card.classList.add('locked');
+    }
+    
+    card.innerHTML = `
+      <div class="icon">${set.icon}</div>
+      <div class="set-num">${set.name}</div>
+      <div class="set-title">${set.topic}</div>
+      <div class="set-meta"><span>১৫ প্রশ্ন</span><span>১০ মিনিট</span></div>
+      ${currentUser ? `<div class="attempt-badge">${isLocked ? '🔒 সম্পূর্ণ' : attemptCount + '/' + MAX_ATTEMPTS}</div>` : ''}
+    `;
+    card.onclick = () => {
+      if (isLocked) {
+        alert(`⚠️ আপনি ${set.name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন।`);
+        return;
+      }
+      selectSet(i);
+    };
+    grid.appendChild(card);
+  }
+}
+
+function showHub() {
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('timerBox').classList.remove('danger');
+  clearInterval(timerInterval);
+  if (currentUser) {
+    document.getElementById('hubUserInfo').innerHTML = `👤 ${currentUser.username} — Test দিতে সেট সিলেক্ট করো।`;
+  } else {
+    document.getElementById('hubUserInfo').innerHTML = '';
+  }
+  buildHub();
+}
+
+function goToHub() {
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('timerBox').classList.remove('danger');
+  clearInterval(timerInterval);
+  isLoggedIn = false;
+  currentUser = null;
+  buildHub();
+}
+
+// ============================================================
+//  সেট সিলেক্ট - সবসময় লগইন চেক
+// ============================================================
+function selectSet(id) {
+  currentSetId = id;
+  const set = allSets[id];
+  pendingSetId = id;
+  document.getElementById('loginSetName').textContent = `📚 ${set.name} — ${set.topic}`;
+  
+  // Check if already logged in
+  if (currentUser) {
+    const attemptCount = getAttemptCount(currentUser.username, id);
+    if (attemptCount >= MAX_ATTEMPTS) {
+      alert(`⚠️ আপনি ${set.name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন।`);
+      return;
+    }
+    startQuiz(id);
+    return;
+  }
+  
+  document.getElementById('loginOverlay').classList.add('active');
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginPassword').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('limitInfo').style.display = 'none';
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginUsername').focus();
+}
+
+// ============================================================
+//  লগইন ফাংশন
+// ============================================================
+function doLoginFromSet() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorEl = document.getElementById('loginError');
+  const limitInfo = document.getElementById('limitInfo');
+  const loginBtn = document.getElementById('loginBtn');
+
+  if (!username || !password) {
+    errorEl.textContent = '❌ দয়া করে ইউজারনেম ও পাসওয়ার্ড দিন।';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const user = userData.find(u => u.username === username && u.password === password);
+  if (user) {
+    const setId = pendingSetId || currentSetId;
+    const setAttempts = getAttemptCount(username, setId);
+    if (setAttempts >= MAX_ATTEMPTS) {
+      limitInfo.style.display = 'block';
+      document.getElementById('limitMsg').textContent = `আপনি এই অ্যাকাউন্ট দিয়ে ${allSets[setId].name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন। আর Test দেওয়া সম্ভব নয়।`;
+      errorEl.style.display = 'none';
+      loginBtn.disabled = true;
+      return;
+    }
+    
+    isLoggedIn = true;
+    currentUser = user;
+    errorEl.style.display = 'none';
+    limitInfo.style.display = 'none';
+    loginBtn.disabled = false;
+    document.getElementById('loginOverlay').classList.remove('active');
+    
+    document.getElementById('hubUserInfo').innerHTML = `👤 ${currentUser.username} — Test দিতে সেট সিলেক্ট করো।`;
+    
+    startQuiz(pendingSetId || currentSetId);
+  } else {
+    errorEl.textContent = '❌ ভুল ইউজারনেম বা পাসওয়ার্ড। আবার চেষ্টা করুন।';
+    errorEl.style.display = 'block';
+    limitInfo.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLoginFromSet();
+  });
+  document.getElementById('loginUsername').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLoginFromSet();
+  });
+  buildHub();
+  document.getElementById('hubPage').classList.remove('hidden');
+  document.getElementById('testArea').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+});
+
+// ============================================================
+//  কুইজ ফাংশন
+// ============================================================
+function startQuiz(setId) {
+  if (!isLoggedIn || !currentUser) return;
+  
+  const setAttempts = getAttemptCount(currentUser.username, setId);
+  if (setAttempts >= MAX_ATTEMPTS) {
+    alert(`⚠️ আপনি এই সেটের সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন।`);
+    return;
+  }
+  
+  incrementAttempt(currentUser.username, setId);
+  
+  cur = 0; score = 0; wrong = 0; answered = false;
+  timeLeft = 10 * 60; userAnswers = [];
+  document.getElementById('hubPage').classList.add('hidden');
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('testArea').classList.remove('hidden');
+  document.getElementById('timerBox').classList.remove('danger');
+  
+  const set = allSets[setId];
+  document.getElementById('testSetLabel').textContent = set.name;
+  document.getElementById('testSetName').textContent = 'ভারতের ভূগোল';
+  document.getElementById('testTopic').textContent = set.topic;
+  
+  // Update retry button
+  document.getElementById('retryBtn').disabled = false;
+  
+  clearInterval(timerInterval);
+  timerInterval = setInterval(tick, 1000);
+  loadQ();
+}
+
+function tick() {
+  timeLeft--;
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  document.getElementById('timerDisplay').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (timeLeft <= 60) document.getElementById('timerBox').classList.add('danger');
+  if (timeLeft <= 0) { clearInterval(timerInterval); showResult(); }
+}
+
+function loadQ() {
+  answered = false;
+  const set = allSets[currentSetId];
+  const q = set.questions[cur];
+  document.getElementById('qNum').textContent = 'প্রশ্ন ' + (cur + 1) + ' / ' + set.questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((cur + 1) / set.questions.length * 100) + '%';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = cur === set.questions.length - 1 ? 'ফলাফল দেখো' : 'পরবর্তী →';
+  document.getElementById('nextBtn').onclick = nextQ;
+  document.getElementById('explanation').classList.remove('show');
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = '<div class="opt-circle">' + LABELS[i] + '</div><div class="opt-text">' + o + '</div>';
+    btn.onclick = () => answer(i);
+    opts.appendChild(btn);
+  });
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+  const set = allSets[currentSetId];
+  const q = set.questions[cur];
+  userAnswers[cur] = i;
+  const btns = document.querySelectorAll('.opt');
+  btns.forEach(b => b.classList.add('disabled'));
+  btns[q.ans].classList.add('correct');
+  if (i !== q.ans) { btns[i].classList.add('wrong'); wrong++; }
+  else score++;
+  document.getElementById('scoreShow').textContent = 'সঠিক: ' + score + ' | ভুল: ' + wrong;
+  document.getElementById('explanationText').innerHTML = '<strong>ব্যাখ্যা:</strong> ' + q.exp;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQ() {
+  const set = allSets[currentSetId];
+  cur++;
+  if (cur >= set.questions.length) { clearInterval(timerInterval); showResult(); return; }
+  loadQ();
+}
+
+function showResult() {
+  document.getElementById('testArea').classList.add('hidden');
+  const rw = document.getElementById('resultWrap');
+  rw.classList.add('show');
+  const set = allSets[currentSetId];
+  const pct = Math.round(score / set.questions.length * 100);
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('rbCorrect').textContent = score;
+  document.getElementById('rbWrong').textContent = wrong;
+  document.getElementById('rbPct').textContent = pct + '%';
+  
+  const remaining = MAX_ATTEMPTS - (getAttemptCount(currentUser.username, currentSetId) || 0);
+  document.getElementById('attemptInfo').innerHTML = `👤 ${currentUser.username} — ${set.name}: বাকি আছে <strong>${remaining}</strong> বার Test দেওয়ার সুযোগ (সর্বোচ্চ ${MAX_ATTEMPTS} বার)`;
+  
+  // Disable retry if no attempts left
+  document.getElementById('retryBtn').disabled = remaining <= 0;
+  
+  const grades = [
+    [90, '🌟', 'অসাধারণ!'],
+    [70, '👍', 'খুব ভালো!'],
+    [50, '📚', 'ভালো চেষ্টা!'],
+    [0, '💪', 'চেষ্টা চালিয়ে যাও!']
+  ];
+  const g = grades.find(x => pct >= x[0]);
+  document.getElementById('resultIcon').textContent = g[1];
+  document.getElementById('resultGrade').textContent = g[2] + ' (' + set.topic + ')';
+}
+
+function retryQuiz() {
+  const setId = currentSetId;
+  const remaining = MAX_ATTEMPTS - (getAttemptCount(currentUser.username, setId) || 0);
+  if (remaining <= 0) {
+    alert(`⚠️ আপনি ${allSets[setId].name} এর সর্বোচ্চ ${MAX_ATTEMPTS} বার Test দিয়েছেন।`);
+    return;
+  }
+  document.getElementById('resultWrap').classList.remove('show');
+  startQuiz(setId);
+}
+
+function showReview() {
+  document.getElementById('resultWrap').classList.remove('show');
+  document.getElementById('testArea').classList.remove('hidden');
+  cur = 0;
+  loadReview();
+}
+
+function loadReview() {
+  const set = allSets[currentSetId];
+  if (cur >= set.questions.length) { 
+    document.getElementById('testArea').classList.add('hidden'); 
+    document.getElementById('resultWrap').classList.add('show'); 
+    return; 
+  }
+  const q = set.questions[cur];
+  document.getElementById('qNum').textContent = 'Review — প্রশ্ন ' + (cur + 1) + ' / ' + set.questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressFill').style.width = ((cur + 1) / set.questions.length * 100) + '%';
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').textContent = cur === set.questions.length - 1 ? 'শেষ করো' : 'পরবর্তী →';
+  document.getElementById('nextBtn').onclick = () => { cur++; loadReview(); };
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt disabled';
+    if (i === q.ans) btn.classList.add('correct');
+    else if (userAnswers[cur] === i) btn.classList.add('wrong');
+    btn.innerHTML = '<div class="opt-circle">' + LABELS[i] + '</div><div class="opt-text">' + o + '</div>';
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('explanationText').innerHTML = '<strong>ব্যাখ্যা:</strong> ' + q.exp;
+  document.getElementById('explanation').classList.add('show');
+  document.getElementById('scoreShow').textContent = 'সবুজ = সঠিক উত্তর';
+}
+</script>
+</body>
+</html>
